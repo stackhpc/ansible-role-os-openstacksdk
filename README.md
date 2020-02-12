@@ -1,7 +1,7 @@
-OpenStack Shade
-===============
+OpenStack openstacksdk
+======================
 
-This role can be used to install the python package `shade`.
+This role can be used to install the python package `openstacksdk`.
 
 Requirements
 ------------
@@ -11,14 +11,16 @@ None
 Role Variables
 --------------
 
-`os_shade_venv` is a path to a directory in which to create a virtualenv.
+`os_openstacksdk_venv` is a path to a directory in which to create a
+virtualenv.
 
-`os_shade_install_epel`: Whether to install EPEL repository package.
+`os_openstacksdk_install_epel`: Whether to install EPEL repository package.
 
-`os_shade_install_package_dependencies`: Whether to install package
+`os_openstacksdk_install_package_dependencies`: Whether to install package
 dependencies.
 
-`os_shade_version`: Version of shade to install, or latest if empty.
+`os_openstacksdk_version`: Version of `openstacksdk` to install, or latest if
+empty.
 
 Dependencies
 ------------
@@ -28,14 +30,14 @@ None
 Example Playbook
 ----------------
 
-The following playbook installs shade and its dependencies in a virtualenv.
+The following playbook installs openstacksdk and its dependencies in a virtualenv.
 
     ---
-    - name: Ensure shade is installed
+    - name: Ensure openstacksdk is installed
       hosts: localhost
       roles:
-        - role: stackhpc.os-shade
-          os_shade_venv: "~/os-shade-venv"
+        - role: stackhpc.os-openstacksdk
+          os_openstacksdk_venv: "~/os-openstacksdk-venv"
 
 Author Information
 ------------------

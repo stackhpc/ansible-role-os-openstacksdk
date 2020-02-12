@@ -1,6 +1,6 @@
 ---
 
-- name: gather os specific variables
+- name: Gather OS specific variables
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
@@ -14,42 +14,44 @@
     state: present
   become: True
   when:
-    - os_shade_install_epel | bool
+    - os_openstacksdk_install_epel | bool
     - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version | int == 7
 
 - name: Ensure required packages are installed
   package:
-    name: "{{ os_shade_package_dependencies }}"
+    name: "{{ os_openstacksdk_package_dependencies }}"
     state: present
   become: True
-  when: os_shade_install_package_dependencies | bool
+  when: os_openstacksdk_install_package_dependencies | bool
 
-- name: Check whether the virtualenv directory exists
-  stat:
-    path: "{{ os_shade_venv | dirname }}"
-    get_md5: False
-    get_checksum: False
-    mime: False
-  when: os_shade_venv != None
-  register: os_shade_venv_stat
+- block:
+    - name: Check whether the virtualenv directory exists
+      stat:
+        path: "{{ os_openstacksdk_venv | dirname }}"
+        get_md5: False
+        get_checksum: False
+        mime: False
+      register: os_openstacksdk_venv_stat
 
-- name: Ensure the virtualenv directory exists
-  file:
-    path: "{{ os_shade_venv | dirname }}"
-    state: directory
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
-  become: True
-  when:
-    - os_shade_venv != None
-    - not os_shade_venv_stat.stat.exists or
-      not os_shade_venv_stat.stat.writeable
+    - name: Ensure the virtualenv directory exists
+      file:
+        path: "{{ os_openstacksdk_venv | dirname }}"
+        state: directory
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
+      become: True
+      when:
+        - not os_openstacksdk_venv_stat.stat.exists or
+          not os_openstacksdk_venv_stat.stat.writeable
+  when: os_openstacksdk_venv is not none
 
 - name: Ensure the latest version of pip is installed
   pip:
     name: "{{ item.name }}"
     state: latest
-    virtualenv: "{{ os_shade_venv or omit }}"
+    virtualenv: "{{ os_openstacksdk_venv or omit }}"
+    virtualenv_python: "{{ 'python' ~ ansible_python.version.major ~ '.' ~ ansible_python.version.minor if os_openstacksdk_venv else omit }}"
   with_items:
     - { name: pip }
 
@@ -57,9 +59,9 @@
   pip:
     name: "{{ item.name }}"
     version: "{{ item.version or omit }}"
-    state: "{{ os_shade_state }}"
-    virtualenv: "{{ os_shade_venv or omit }}"
-    extra_args: "{% if os_shade_upper_constraints_file %}-c {{ os_shade_upper_constraints_file }}{% endif %}"
+    state: "{{ os_openstacksdk_state }}"
+    virtualenv: "{{ os_openstacksdk_venv or omit }}"
+    extra_args: "{% if os_openstacksdk_upper_constraints_file %}-c {{ os_openstacksdk_upper_constraints_file }}{% endif %}"
   with_items:
-    - name: shade
-      version: "{{ os_shade_version }}"
+    - name: openstacksdk
+      version: "{{ os_openstacksdk_version }}"
