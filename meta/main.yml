@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  #role_name: os_openstacksdk
+  role_name: os_openstacksdk
   author: Mark Goddard
   description: >
     Role to install the python package openstacksdk
