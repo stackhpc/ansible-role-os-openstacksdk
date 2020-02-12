@@ -16,6 +16,7 @@
   when:
     - os_openstacksdk_install_epel | bool
     - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version | int == 7
 
 - name: Ensure required packages are installed
   package:
@@ -50,6 +51,7 @@
     name: "{{ item.name }}"
     state: latest
     virtualenv: "{{ os_openstacksdk_venv or omit }}"
+    virtualenv_python: "{{ 'python' ~ ansible_python.version.major ~ '.' ~ ansible_python.version.minor if os_openstacksdk_venv else omit }}"
   with_items:
     - { name: pip }
 
