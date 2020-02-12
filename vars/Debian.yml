@@ -1,6 +1,6 @@
 ---
 # List of package dependencies.
-os_shade_package_dependencies:
+os_openstacksdk_package_dependencies:
   - gcc
   - libffi-dev
   - libssl-dev
