@@ -36,7 +36,7 @@ The following playbook installs openstacksdk and its dependencies in a virtualen
     - name: Ensure openstacksdk is installed
       hosts: localhost
       roles:
-        - role: stackhpc.os-openstacksdk
+        - role: stackhpc.os_openstacksdk
           os_openstacksdk_venv: "~/os-openstacksdk-venv"
 
 Author Information
