@@ -22,7 +22,7 @@ install:
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
   # Compensate for repo name being different to the role
-  - ln -s $(pwd) ../stackhpc.os-openstacksdk
+  - ln -s $(pwd) ../stackhpc.os_openstacksdk
 
 script:
   # Run Ansible lint against the role
