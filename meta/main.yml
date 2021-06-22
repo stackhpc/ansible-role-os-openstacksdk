@@ -6,7 +6,7 @@ galaxy_info:
     Role to install the python package openstacksdk
   company: StackHPC Ltd
   license: Apache2
-  min_ansible_version: 2.5
+  min_ansible_version: 2.9
   platforms:
     - name: EL
       versions:
@@ -18,6 +18,11 @@ galaxy_info:
     - name: Debian
       versions:
         - all
+    - name: macOS
+      versions:
+        - Sierra
+        - High-Sierra
+        - Big-Sur
   galaxy_tags:
     - cloud
     - openstack
